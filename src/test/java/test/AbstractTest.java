@@ -1,5 +1,6 @@
 package test;
 
+import driver.DriverSingleton;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
@@ -12,13 +13,11 @@ public class AbstractTest {
 
   @BeforeMethod (alwaysRun = true)
   public void browserSetup() {
-    driver = new ChromeDriver();
-    driver.manage().window().maximize();
+    DriverSingleton.getDriver();
   }
 
   @AfterTest(alwaysRun = true)
   public void browserTearDown() {
-    driver.quit();
-    driver = null;
+    DriverSingleton.closeDriver();
   }
 }
