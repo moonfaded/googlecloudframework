@@ -13,7 +13,7 @@ public class AbstractTest {
 
   @BeforeMethod (alwaysRun = true)
   public void browserSetup() {
-    DriverSingleton.getDriver();
+    driver = DriverSingleton.getDriver();
   }
 
   @AfterTest(alwaysRun = true)
