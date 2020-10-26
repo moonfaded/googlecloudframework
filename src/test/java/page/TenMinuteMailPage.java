@@ -1,5 +1,6 @@
 package page;
 
+import model.EstimateModel;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -47,10 +48,14 @@ public class TenMinuteMailPage extends AbstractPage {
     return new EstimateMailingPage(driver);
   }
 
-  public GoogleCloudHomePage openMessageWithEmailedEstimate() {
+  public TenMinuteMailPage openMessageWithEmailedEstimate() {
     CustomConditions.clickOnVisibleElement(emailMessage, driver);
     CustomConditions.clickOnVisibleElement(totalCost, driver);
-    return new GoogleCloudHomePage(driver);
+    return this;
+  }
+
+  public boolean isEstimatedCostEqualTo(EstimateModel estimateModel) {
+    return totalCost.getText().contains(estimateModel.getEstimatedCost());
   }
 
   public static String getPlatformCostFromEmail() {

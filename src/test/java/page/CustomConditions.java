@@ -1,5 +1,7 @@
 package page;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,16 +19,25 @@ public class CustomConditions {
         .until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frame));
   }
 
-  public static void clickOnVisibleElement(WebElement webElement, WebDriver driver) {
-    new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(webElement)).click();
+  public static void clickOnVisibleElement(WebElement element, WebDriver driver) {
+    new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(element));
+    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+  }
+
+  public static void clickOnVisibleElement(By requiredOptionLocator, WebDriver driver) {
+    WebElement requiredOption = new WebDriverWait(driver, 15)
+                                    .until(ExpectedConditions.visibilityOfElementLocated(requiredOptionLocator));
+    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", requiredOption);
   }
 
   public static void clickOnClickableElement(WebElement webElement, WebDriver driver) {
     new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(webElement)).click();
   }
 
-  public static void selectFromTheDropdownList(WebElement dropdownList, WebElement requiredOption, WebDriver driver) {
-    clickOnVisibleElement(dropdownList, driver);
-    clickOnVisibleElement(requiredOption, driver);
+  public static void selectFromTheDropdownList(WebElement dropdownList, String requiredOptionXpath,
+      String requiredOption, WebDriver driver) {
+    clickOnClickableElement(dropdownList, driver);
+    By requiredOptionLocator = By.xpath(String.format(requiredOptionXpath, requiredOption));
+    clickOnVisibleElement(requiredOptionLocator, driver);
   }
 }

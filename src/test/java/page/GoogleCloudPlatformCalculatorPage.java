@@ -1,5 +1,6 @@
 package page;
 
+import model.EstimateModel;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,7 +14,8 @@ public class GoogleCloudPlatformCalculatorPage extends AbstractPage {
     super(driver);
   }
 
-  private final String NUMBER_OF_PLATFORM_INSTANCES = "4";
+  private final String MD_OPTION_XPATH = "//md-option//div[contains(text(), '%s')]";
+  private final String MD_SELECT_MENU_CONTAINER_XPATH = "//div[@class='md-select-menu-container md-active md-clickable']//div[contains(text(), '%s')]";
 
   @FindBy(xpath = "//*[@id='cloud-site']//iframe")
   private WebElement firstFrame;
@@ -40,7 +42,7 @@ public class GoogleCloudPlatformCalculatorPage extends AbstractPage {
   private WebElement machineClassRegularOption;
 
   @FindBy(id = "select_value_label_57")
-  private WebElement SeriesField;
+  private WebElement seriesField;
 
   @FindBy(id = "select_option_186")
   private WebElement SeriesOption;
@@ -87,19 +89,18 @@ public class GoogleCloudPlatformCalculatorPage extends AbstractPage {
   @FindBy(xpath = "//form[@name='ComputeEngineForm']//button[contains(text(),'Add to Estimate')]")
   private WebElement addToEstimateButton;
 
-  public GoogleCloudPlatformCalculatorPage setPlatformProperties() {
+  public GoogleCloudPlatformCalculatorPage setPlatformProperties(EstimateModel estimateModel) {
     CustomConditions.switchToInnerFrame(firstFrame, secondFrame, driver);
     chooseTheComputeEngineSection()
-        .specifyNumberOfInstances(NUMBER_OF_PLATFORM_INSTANCES)
-        .selectFreeOperatingSystem()
-        .selectRegularVmClass()
-        .selectSeries()
-        .selectMachineType()
-        .clickToAddGpusCheckbox()
-        .addGpus()
-        .selectLocalSsd()
-        .selectDatacenterLocation()
-        .selectCommittedUsage();
+        .specifyNumberOfInstances(estimateModel.getNumberOfInstances())
+        .selectOperatingSystem(estimateModel.getOperatingSystem())
+        .selectVirtualMachineClass(estimateModel.getVirtualMachineClass())
+        .selectMachineSeries(estimateModel.getMachineSeries())
+        .selectMachineType(estimateModel.getMachineType())
+        .addGpus(estimateModel.getAddGpus(), estimateModel.getNumberOfGpus(), estimateModel.getGpuType())
+        .selectLocalSsd(estimateModel.getLocalSsd())
+        .selectDatacenterLocation(estimateModel.getDatacenterLocation())
+        .selectCommittedUsage(estimateModel.getCommittedUsage());
     return this;
   }
 
@@ -114,49 +115,57 @@ public class GoogleCloudPlatformCalculatorPage extends AbstractPage {
     return this;
   }
 
-  public GoogleCloudPlatformCalculatorPage selectFreeOperatingSystem() {
-    CustomConditions.selectFromTheDropdownList(operatingSystemField, freeOperatingSystemOrSoftwareOption, driver);
+  public GoogleCloudPlatformCalculatorPage selectOperatingSystem(String requiredOperatingSystem) {
+    CustomConditions.selectFromTheDropdownList(operatingSystemField, MD_OPTION_XPATH,
+        requiredOperatingSystem, driver);
     return this;
   }
 
-  public GoogleCloudPlatformCalculatorPage selectRegularVmClass() {
-    CustomConditions.selectFromTheDropdownList(machineClassField, machineClassRegularOption, driver);
+  public GoogleCloudPlatformCalculatorPage selectVirtualMachineClass(String requiredVirtualMachineClass) {
+    CustomConditions.selectFromTheDropdownList(machineClassField, MD_SELECT_MENU_CONTAINER_XPATH,
+        requiredVirtualMachineClass, driver);
     return this;
   }
 
-  public GoogleCloudPlatformCalculatorPage selectSeries() {
-    CustomConditions.selectFromTheDropdownList(SeriesField, SeriesOption, driver);
+  public GoogleCloudPlatformCalculatorPage selectMachineSeries(String requiredMachineSeries) {
+    CustomConditions.selectFromTheDropdownList(seriesField, MD_SELECT_MENU_CONTAINER_XPATH,
+        requiredMachineSeries, driver);
     return this;
   }
 
-  public GoogleCloudPlatformCalculatorPage selectMachineType() {
-    CustomConditions.selectFromTheDropdownList(machineTypeField, machineTypeOption, driver);
+  public GoogleCloudPlatformCalculatorPage selectMachineType(String requiredMachineType) {
+    CustomConditions.selectFromTheDropdownList(machineTypeField, MD_OPTION_XPATH,
+        requiredMachineType, driver);
     return this;
   }
 
-  public GoogleCloudPlatformCalculatorPage clickToAddGpusCheckbox() {
-    CustomConditions.clickOnVisibleElement(addGpusCheckbox, driver);
+  public GoogleCloudPlatformCalculatorPage addGpus(String valueOfAddGPUsCheckbox, String requiredNumberOfGPUs,
+      String requiredGpuType) {
+    if (valueOfAddGPUsCheckbox.equals("true")) {
+      CustomConditions.clickOnVisibleElement(addGpusCheckbox, driver);
+      CustomConditions.selectFromTheDropdownList(numberOfGpusField, MD_SELECT_MENU_CONTAINER_XPATH,
+          requiredNumberOfGPUs, driver);
+      CustomConditions.selectFromTheDropdownList(gpuTypeField, MD_OPTION_XPATH,
+          requiredGpuType, driver);
+    }
     return this;
   }
 
-  public GoogleCloudPlatformCalculatorPage addGpus() {
-    CustomConditions.selectFromTheDropdownList(numberOfGpusField, numberOfGpusSingleGpuOption, driver);
-    CustomConditions.selectFromTheDropdownList(gpuTypeField, requiredGpuType, driver);
+  public GoogleCloudPlatformCalculatorPage selectLocalSsd(String requiredLocalSsd) {
+    CustomConditions.selectFromTheDropdownList(localSsdField, MD_OPTION_XPATH,
+        requiredLocalSsd, driver);
     return this;
   }
 
-  public GoogleCloudPlatformCalculatorPage selectLocalSsd() {
-    CustomConditions.selectFromTheDropdownList(localSsdField, requiredLocalSsd, driver);
+  public GoogleCloudPlatformCalculatorPage selectDatacenterLocation(String requiredDatacenterLocation) {
+    CustomConditions.selectFromTheDropdownList(datacenterLocationField, MD_SELECT_MENU_CONTAINER_XPATH,
+        requiredDatacenterLocation, driver);
     return this;
   }
 
-  public GoogleCloudPlatformCalculatorPage selectDatacenterLocation() {
-    CustomConditions.selectFromTheDropdownList(datacenterLocationField, requiredDatacenterLocation, driver);
-    return this;
-  }
-
-  public GoogleCloudPlatformCalculatorPage selectCommittedUsage() {
-    CustomConditions.selectFromTheDropdownList(committedUsageField, committedUsageOneYearOption, driver);
+  public GoogleCloudPlatformCalculatorPage selectCommittedUsage(String requiredCommittedUsage) {
+    CustomConditions.selectFromTheDropdownList(committedUsageField, MD_SELECT_MENU_CONTAINER_XPATH,
+        requiredCommittedUsage, driver);
     return this;
   }
   public GoogleCloudPlatformCalculatorPage addPlatformToEstimate() {

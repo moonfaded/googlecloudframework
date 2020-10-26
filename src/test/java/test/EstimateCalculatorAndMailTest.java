@@ -1,32 +1,33 @@
 package test;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import model.EstimateModel;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.Test;
 import page.GoogleCloudHomePage;
 import page.TenMinuteMailPage;
+import service.EstimateModelCreator;
 
 public class EstimateCalculatorAndMailTest extends AbstractTest {
 
-  private final String EXPECTED_PLATFORM_COST = "USD 1,082.77";
-
   @Test
   public void estimatedCostEqualsEmailedCost() {
-    GoogleCloudHomePage googleCloudHomePage = new GoogleCloudHomePage(driver)
-                                                  .openPage()
-                                                  .searchForGoogleCloudPlatformCalculator()
-                                                  .openGoogleCloudPlatformCalculator()
-                                                  .setPlatformProperties()
-                                                  .addPlatformToEstimate()
-                                                  .openTenMinuteMailPageInNewTab()
-                                                  .copyGeneratedTenMinuteMail()
-                                                  .switchToCalculatorTab()
-                                                  .clickEmailEstimateButton()
-                                                  .sendEstimateEmail()
-                                                  .switchToTenMinuteMailTab()
-                                                  .openMessageWithEmailedEstimate();
+    EstimateModel estimateModel = EstimateModelCreator.createEstimateWithDataFromProperty();
 
-    Assert.assertEquals(EXPECTED_PLATFORM_COST, TenMinuteMailPage.getPlatformCostFromEmail());
+    boolean expectedValue = new GoogleCloudHomePage(driver)
+                                .openPage()
+                                .searchForGoogleCloudPlatformCalculator()
+                                .openGoogleCloudPlatformCalculator()
+                                .setPlatformProperties(estimateModel)
+                                .addPlatformToEstimate()
+                                .openTenMinuteMailPageInNewTab()
+                                .copyGeneratedTenMinuteMail()
+                                .switchToCalculatorTab()
+                                .clickEmailEstimateButton()
+                                .sendEstimateEmail()
+                                .switchToTenMinuteMailTab()
+                                .openMessageWithEmailedEstimate()
+                                .isEstimatedCostEqualTo(estimateModel);
+
+    Assert.assertTrue(expectedValue, "Total estimated monthly cost received on Pricing Calculator page is not equal to manual test result!");
   }
 }

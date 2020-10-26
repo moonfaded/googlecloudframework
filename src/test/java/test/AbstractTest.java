@@ -18,6 +18,6 @@ public class AbstractTest {
 
   @AfterTest(alwaysRun = true)
   public void browserTearDown() {
-    DriverSingleton.closeDriver();
+   DriverSingleton.closeDriver();
   }
 }
