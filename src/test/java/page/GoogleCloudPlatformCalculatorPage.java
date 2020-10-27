@@ -110,7 +110,8 @@ public class GoogleCloudPlatformCalculatorPage extends AbstractPage {
   }
 
   public GoogleCloudPlatformCalculatorPage specifyNumberOfInstances(String numberOfInstances) {
-    numberOfInstancesInput.click();
+    CustomConditions.clickOnClickableElement(numberOfInstancesInput, driver);
+    //numberOfInstancesInput.click();
     numberOfInstancesInput.sendKeys(numberOfInstances);
     return this;
   }

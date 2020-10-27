@@ -34,17 +34,18 @@ public class EstimateMailingPage extends AbstractPage {
   public EstimateMailingPage clickEmailEstimateButton() {
     CustomConditions.switchToInnerFrame(firstFrame, secondFrame, driver);
     CustomConditions.clickOnVisibleElement(emailEstimateButton, driver);
-    try {
-      Thread.sleep(2000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+//    try {
+//      Thread.sleep(2000);
+//    } catch (InterruptedException e) {
+//      e.printStackTrace();
+//    }
     //new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(emailInput));
     return this;
   }
 
   public EstimateMailingPage sendEstimateEmail() {
-    emailInput.sendKeys(Keys.chord(Keys.CONTROL, "v"));
+    //emailInput.sendKeys(Keys.chord(Keys.CONTROL, "v"));
+    emailInput.sendKeys(TenMinuteMailPage.getEmail());
     CustomConditions.clickOnClickableElement(sendEmailButton, driver);
     return this;
   }

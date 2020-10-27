@@ -10,6 +10,12 @@ import java.util.ArrayList;
 
 public class TenMinuteMailPage extends AbstractPage {
 
+  private static String email;
+
+  public static String getEmail() {
+    return email;
+  }
+
   public TenMinuteMailPage(WebDriver driver) {
     super(driver);
   }
@@ -38,7 +44,8 @@ public class TenMinuteMailPage extends AbstractPage {
   }
 
   public TenMinuteMailPage copyGeneratedTenMinuteMail() {
-    emailAddress.sendKeys(Keys.chord(Keys.CONTROL, "c"));
+    email = emailAddress.getAttribute("value");
+    //emailAddress.sendKeys(Keys.chord(Keys.CONTROL, "c"));
     return this;
   }
 
