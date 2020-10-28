@@ -48,7 +48,6 @@ public class TenMinuteMailPage extends AbstractPage {
   public TenMinuteMailPage copyGeneratedTenMinuteMail() {
     new WebDriverWait(driver, 15).until(ExpectedConditions.attributeContains(emailAddress, "value", "@"));
     email = emailAddress.getAttribute("value");
-    //emailAddress.sendKeys(Keys.chord(Keys.CONTROL, "c"));
     return this;
   }
 

@@ -36,12 +36,6 @@ public class EstimateMailingPage extends AbstractPage {
       CustomConditions.switchToInnerFrame(firstFrame, secondFrame, driver);
     }
     CustomConditions.clickOnVisibleElement(emailEstimateButton, driver);
-//    try {
-//      Thread.sleep(2000);
-//    } catch (InterruptedException e) {
-//      e.printStackTrace();
-//    }
-    //new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(emailInput));
     return this;
   }
 
