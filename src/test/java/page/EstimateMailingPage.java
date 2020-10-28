@@ -32,7 +32,9 @@ public class EstimateMailingPage extends AbstractPage {
   private WebElement sendEmailButton;
 
   public EstimateMailingPage clickEmailEstimateButton() {
-//    CustomConditions.switchToInnerFrame(firstFrame, secondFrame, driver);
+    if (!(System.getProperty("browser").equals("firefox"))) {
+      CustomConditions.switchToInnerFrame(firstFrame, secondFrame, driver);
+    }
     CustomConditions.clickOnVisibleElement(emailEstimateButton, driver);
 //    try {
 //      Thread.sleep(2000);
