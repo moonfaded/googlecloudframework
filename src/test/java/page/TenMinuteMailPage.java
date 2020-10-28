@@ -5,6 +5,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 
@@ -44,6 +46,7 @@ public class TenMinuteMailPage extends AbstractPage {
   }
 
   public TenMinuteMailPage copyGeneratedTenMinuteMail() {
+    new WebDriverWait(driver, 15).until(ExpectedConditions.attributeContains(emailAddress, "value", "@"));
     email = emailAddress.getAttribute("value");
     //emailAddress.sendKeys(Keys.chord(Keys.CONTROL, "c"));
     return this;

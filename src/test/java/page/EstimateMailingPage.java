@@ -32,7 +32,7 @@ public class EstimateMailingPage extends AbstractPage {
   private WebElement sendEmailButton;
 
   public EstimateMailingPage clickEmailEstimateButton() {
-    CustomConditions.switchToInnerFrame(firstFrame, secondFrame, driver);
+//    CustomConditions.switchToInnerFrame(firstFrame, secondFrame, driver);
     CustomConditions.clickOnVisibleElement(emailEstimateButton, driver);
 //    try {
 //      Thread.sleep(2000);
@@ -44,7 +44,6 @@ public class EstimateMailingPage extends AbstractPage {
   }
 
   public EstimateMailingPage sendEstimateEmail() {
-    //emailInput.sendKeys(Keys.chord(Keys.CONTROL, "v"));
     emailInput.sendKeys(TenMinuteMailPage.getEmail());
     CustomConditions.clickOnClickableElement(sendEmailButton, driver);
     return this;

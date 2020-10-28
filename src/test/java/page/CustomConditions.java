@@ -31,12 +31,13 @@ public class CustomConditions {
   }
 
   public static void clickOnClickableElement(WebElement webElement, WebDriver driver) {
-    new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(webElement)).click();
+    new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(webElement));
+    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", webElement);
   }
 
   public static void selectFromTheDropdownList(WebElement dropdownList, String requiredOptionXpath,
       String requiredOption, WebDriver driver) {
-    clickOnClickableElement(dropdownList, driver);
+    clickOnVisibleElement(dropdownList, driver);
     By requiredOptionLocator = By.xpath(String.format(requiredOptionXpath, requiredOption));
     clickOnVisibleElement(requiredOptionLocator, driver);
   }
